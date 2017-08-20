@@ -21,7 +21,62 @@ class Request
      * @return void
      */
     public  function  prepareUrl(){
-        pre($_SERVER);
-    }
+        $script =dirname($this->server('SCRIPT_NAME'));
+        $script = strtolower($script);
+        $requestUri = $this->server('REQUEST_URI');
+        if (strpos($requestUri,'?')!==false){
+            list($requestUri,$queryString)=explode('?',$requestUri);
+        }
+        $this->url = preg_replace('#^'.$script.'#','',$requestUri);
 
+
+    }
+    /*
+     * Get Value from _Get by the given  key
+     * @param string  key
+     * @param mixed $key
+     * @return mixed
+     */
+    public  function  get($key ,$default =null){
+        return array_get($_GET,$key,$default);
+    }
+    /*
+     * Get Value from _Post by the given  key
+     * @param string  key
+     * @param mixed $key
+     * @return mixed
+     */
+    public  function  Post($key ,$default =null){
+        return array_get($_POST,$key,$default);
+    }
+    /*
+     * Get Value from _SERVER by the given  key
+     * @param string  key
+     * @param mixed $key
+     * @return mixed
+     */
+    public  function  server($key ,$default =null){
+       return array_get($_SERVER,$key,$default);
+    }
+    /**
+     * Get Current Request Method
+     * @return string
+     */
+    public function method(){
+      return $this->server('REQUEST_METHOD');
+    }
+    /**
+     * Get full url of the  script
+     * @return string
+     */
+    public  function  baseUrl(){
+        
+    }
+    /**
+     * Get only relative url (Clean url)
+     * @return string
+     */
+public  function url(){
+    return $this->url;
+}
 }

@@ -16,5 +16,5 @@ $file = new File(__DIR__);
 $app = new Application($file);
 
 $app->run();
-use App\Controllers\User;
-new User\User($app);
+//use App\Controllers\User;
+//new User\User($app);
