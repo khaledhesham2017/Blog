@@ -16,6 +16,11 @@ class Request
      * @var string
      */
     private $url;
+    /**
+     * Base Url
+     * @var  string
+     */
+    private  $baseUrl;
     /*
      * prepare url
      * @return void
@@ -28,7 +33,7 @@ class Request
             list($requestUri,$queryString)=explode('?',$requestUri);
         }
         $this->url = preg_replace('#^'.$script.'#','',$requestUri);
-
+        $this->baseUrl =$this->server('REQUEST_SCHEME').'://'.$this->server('HTTP_HOST').$script.'/';
 
     }
     /*
@@ -70,7 +75,7 @@ class Request
      * @return string
      */
     public  function  baseUrl(){
-        
+      return $this->baseUrl;
     }
     /**
      * Get only relative url (Clean url)
