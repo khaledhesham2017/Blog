@@ -16,27 +16,44 @@ class Application
      * @var array
      */
     private  $container =[];
-
-    /***
+    /**
+     * Application  Object
+     * @var \System\Application
+     */
+      private static $instance;
+    /**
      *
      * Constructor
      * @param \System\File $file
      */
-    public  function  __construct(File $file)
+    private  function  __construct(File $file)
     {
        $this->share('file',$file);
        $this->registerClasses();
-        $this->loadHelpers();
-
-
+       static::$instance =$this;
+       $this->loadHelpers();
+    }
+    /**
+     * Get Application Instance
+     * @param \System\File $file
+     * @return \System\Application
+     */
+    public static function getInstance ( $file =null){
+        if(is_null(static::$instance)){
+            static::$instance = new static($file);
+        }
+        return static::$instance;
     }
     /*
      * Run the  Application
      * @return void
      */
     public  function  run(){
+
          $this->session->start();
-        $this->request->prepareUrl();
+         $this->request->prepareUrl();
+         $this->file->newRequire('App/index.php');
+         list($controller,$method,$arguments) = $this->route->getProperRoute();
 
     }
     /*
@@ -45,7 +62,7 @@ class Application
      *
      */
     private  function  loadHelpers(){
-        $this->file->newRequire($this->file->toVendor('helpers.php'));
+        $this->file->newRequire('vendor/helpers.php');
     }
     /*
 
@@ -66,13 +83,11 @@ class Application
 
     if (strpos($class,'App')===0){
 
-        $file =$this->file->to($class.'.php');
+        $file = $class.'.php';
     }
     else{
         //get class  from vendor
-
-
-        $file = $this->file->tovendor($class.'.php');
+        $file = 'vendor/'.$class.'.php';
 
     }
 
@@ -145,13 +160,14 @@ private function crateNewCoreObject($alias){
 
      return [
          'request' => 'System\\Http\\Request',
-         'response' => 'System\\Http\\Response',
+         'response'=> 'System\\Http\\Response',
          'session' => 'System\\Session',
-         'cookie' => 'System\\Cookie',
-         'load' => 'System\\loader',
-         'html' => 'System\\Html',
-         'db' => 'System\\Database',
-         'view' => 'System\\ViewFactory',
+         'route'   => 'System\\Route',
+         'cookie'  => 'System\\Cookie',
+         'load'    => 'System\\loader',
+         'html'    => 'System\\Html',
+         'db'      => 'System\\Database',
+         'view'    => 'System\\ViewFactory',
 
 
      ];

@@ -36,7 +36,7 @@ class File
  * @return bool
  */
  public  function exists ($file ){
-     return file_exists($file);
+     return file_exists($this->to($file));
 
  }
     /**
@@ -46,7 +46,7 @@ class File
      */
     public  function newRequire  ($file ){
 
-     require  $file;
+     require  $this->to($file);
     }
   /**
    * Generate full path to the given path in vendor folder
