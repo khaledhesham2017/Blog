@@ -17,7 +17,7 @@ class HomeController extends Controller
       echo  $this->request->url();
       //$this->session->set('name','Hassan');
      //to use  controller  in anthor controller
-     $this->load->controller('\Header')->index();
+     $this->load->controller('Header')->index();
      echo $this->session->get('name');
  }
 }

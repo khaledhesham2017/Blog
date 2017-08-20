@@ -94,8 +94,8 @@ class Loader
      */
     private function getControllerName($controller){
         $controller .= 'Controller';
-        $controller = 'App\\Controllers'.$controller;
-        return $controller;
+        $controller = 'App\\Controllers\\'.$controller;
+        return str_replace('/','\\',$controller);
     }
     /**
      * Call the given model
